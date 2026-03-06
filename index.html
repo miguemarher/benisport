@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-<meta name="apple-mobile-web-app-capable" content="yes" />
 <title>Benisport Games 2026</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -36,7 +36,7 @@ body::before{
   top:0;left:0;
   width:100%;height:100%;
   background:rgba(0,0,0,.85);
-  z-index:-2;
+  z-index:-1;
 }
 
 #particles{
@@ -44,8 +44,13 @@ body::before{
   top:0;left:0;
   width:100%;
   height:100%;
-  max-width:100%;
-  z-index:-1;
+  pointer-events:none;
+  z-index:0 !important;
+}
+
+header, section, footer{
+  position:relative;
+  z-index:10;
 }
 
 header{
@@ -133,16 +138,9 @@ tr:nth-child(even){background:#181818}
 
 footer{text-align:center;padding:50px;background:black;border-top:2px solid var(--green);color:var(--gray);letter-spacing:2px}
 
-/* ========================= */
-/*   CORRECCIONES MÓVILES    */
-/* ========================= */
-
+/* MÓVIL */
 @media(max-width:900px){
-
-  header{
-    padding:15px 20px;
-  }
-
+  header{padding:15px 20px;}
   nav{
     position:absolute;
     top:70px;
@@ -155,34 +153,15 @@ footer{text-align:center;padding:50px;background:black;border-top:2px solid var(
     text-align:center;
     z-index:9999;
   }
-
-  nav.show{
-    display:flex;
-  }
-
-  nav a{
-    margin:15px 0;
-    font-size:1.3rem;
-  }
-
-  .menu-toggle{
-    display:flex;
-  }
-
-  .card{
-    padding:25px;
-  }
-
-  table th, table td{
-    padding:10px;
-    font-size:0.9rem;
-  }
+  nav.show{display:flex;}
+  nav a{margin:15px 0;font-size:1.3rem;}
+  .menu-toggle{display:flex;}
+  .card{padding:25px;}
+  table th, table td{padding:10px;font-size:0.9rem;}
 }
 
 @media(max-width:600px){
-  .athletes-grid{
-    grid-template-columns:1fr;
-  }
+  .athletes-grid{grid-template-columns:1fr;}
 }
 </style>
 </head>
@@ -210,14 +189,9 @@ footer{text-align:center;padding:50px;background:black;border-top:2px solid var(
 <a href="#ranking" class="btn">Ver Clasificación Oficial</a>
 </div>
 
-<!-- ========================= -->
-<!--   RANKING CON MODALIDADES -->
-<!-- ========================= -->
-
 <section id="ranking">
 <h3>Ranking Oficial</h3>
 
-<!-- MASCULINO -->
 <div class="card">
 <h2 style="font-family:'Oswald';margin-bottom:20px;color:var(--green)">Modalidad Masculina</h2>
 <table>
@@ -227,7 +201,6 @@ footer{text-align:center;padding:50px;background:black;border-top:2px solid var(
 <canvas id="rankingChartM"></canvas>
 </div>
 
-<!-- FEMENINO -->
 <div class="card">
 <h2 style="font-family:'Oswald';margin-bottom:20px;color:var(--green)">Modalidad Femenina</h2>
 <table>
@@ -239,20 +212,14 @@ footer{text-align:center;padding:50px;background:black;border-top:2px solid var(
 
 </section>
 
-<!-- ========================= -->
-<!--   PERFILES DE ATLETAS     -->
-<!-- ========================= -->
-
 <section id="athletes">
 <h3>Perfiles de Atletas</h3>
 
-<!-- PERFILES MASCULINOS -->
 <div class="card">
 <h2 style="font-family:'Oswald';margin-bottom:20px;color:var(--green)">Atletas Masculinos</h2>
 <div class="athletes-grid" id="athletesGridM"></div>
 </div>
 
-<!-- PERFILES FEMENINOS -->
 <div class="card">
 <h2 style="font-family:'Oswald';margin-bottom:20px;color:var(--green)">Atletas Femeninas</h2>
 <div class="athletes-grid" id="athletesGridF"></div>
@@ -274,6 +241,12 @@ menuToggle.addEventListener('click',()=>{navMenu.classList.toggle('show')});
 const canvas=document.getElementById('particles');
 const ctxp=canvas.getContext('2d');
 canvas.width=window.innerWidth;canvas.height=window.innerHeight;
+
+window.addEventListener('resize',()=>{
+  canvas.width=window.innerWidth;
+  canvas.height=window.innerHeight;
+});
+
 let particles=[];
 for(let i=0;i<100;i++){particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*2+1,d:Math.random()*0.5})}
 function drawParticles(){ctxp.clearRect(0,0,canvas.width,canvas.height);ctxp.fillStyle='rgba(255,255,255,0.08)';particles.forEach(p=>{ctxp.beginPath();ctxp.arc(p.x,p.y,p.r,0,Math.PI*2);ctxp.fill()});updateParticles()}
@@ -293,21 +266,40 @@ document.getElementById('countdown').innerHTML=`Próximo evento en: ${d}d ${h}h 
 },1000);
 
 /* ========================= */
+/*   CARGAR DATOS DESDE LOCALSTORAGE */
+/* ========================= */
+
+function loadData(){
+  let rankingM = JSON.parse(localStorage.getItem("rankingM"));
+  let rankingF = JSON.parse(localStorage.getItem("rankingF"));
+
+  if(!rankingM){
+    rankingM = [
+      {name:"Miguel Martínez", points:36},
+      {name:"Marcos Martínez", points:29},
+      {name:"Sergio Galera", points:24},
+      {name:"Carlos López", points:20}
+    ];
+  }
+
+  if(!rankingF){
+    rankingF = [
+      {name:"Carmina Galera", points:18},
+      {name:"Laura Sánchez", points:15},
+      {name:"Ana Torres", points:12}
+    ];
+  }
+
+  return {rankingM, rankingF};
+}
+
+const data = loadData();
+let rankingM = data.rankingM.sort((a,b)=>b.points-a.points);
+let rankingF = data.rankingF.sort((a,b)=>b.points-a.points);
+
+/* ========================= */
 /*   RANKING MASCULINO       */
 /* ========================= */
-let rankingM=[
-{name:"Miguel Martínez",points:36},
-{name:"Marcos Martínez",points:29},
-{name:"Sergio Galera",points:24},
-{name:"Carlos López",points:20},
-{name:"Miguel Martínez",points:86},
-{name:"Miguel Martínez",points:58},
-{name:"Miguel Martínez",points:10},
-{name:"Miguel Martínez",points:8},
-{name:"Miguel Martínez",points:3},
-{name:"Miguel Martínez",points:1}
-];
-rankingM.sort((a,b)=>b.points-a.points);
 
 const tableM=document.getElementById('rankingTableM');
 rankingM.forEach((athlete,index)=>{
@@ -326,18 +318,6 @@ options:{plugins:{legend:{display:false}},scales:{x:{ticks:{color:'white'}},y:{t
 /* ========================= */
 /*   RANKING FEMENINO        */
 /* ========================= */
-let rankingF=[
-{name:"Carmina Galera",points:18},
-{name:"Laura Sánchez",points:15},
-{name:"Ana Torres",points:12},
-{name:"Carmina Galera",points:18},
-{name:"Laura Sánchez",points:15},
-{name:"Ana Torres",points:12},
-{name:"Carmina Galera",points:18},
-{name:"Laura Sánchez",points:15},
-{name:"Ana Torres",points:12}
-];
-rankingF.sort((a,b)=>b.points-a.points);
 
 const tableF=document.getElementById('rankingTableF');
 rankingF.forEach((athlete,index)=>{
@@ -356,6 +336,7 @@ options:{plugins:{legend:{display:false}},scales:{x:{ticks:{color:'white'}},y:{t
 /* ========================= */
 /*   PERFILES MASCULINOS     */
 /* ========================= */
+
 const gridM=document.getElementById('athletesGridM');
 rankingM.forEach(a=>{
 const card=document.createElement('div');
@@ -370,6 +351,7 @@ gridM.appendChild(card);
 /* ========================= */
 /*   PERFILES FEMENINOS      */
 /* ========================= */
+
 const gridF=document.getElementById('athletesGridF');
 rankingF.forEach(a=>{
 const card=document.createElement('div');
@@ -392,7 +374,7 @@ newsContainer.appendChild(div);
 });
 
 /* EVENTOS */
-const eventsData=[{name:"Bar Hold Challenge",date:"10 Abril 2026",description:"Aguantar colgado de la barra el máximo tiempo posible."}];
+const eventsData=[{name:"Bar Hold Challenge",date:"10 Abril 2026",description:"Aguantar el máximo tiempo colgado en barra."}];
 const eventsContainer=document.getElementById('eventsContainer');
 eventsData.forEach(e=>{
 const div=document.createElement('div');
@@ -401,10 +383,6 @@ div.innerHTML=`<h4 style="color:var(--green)">${e.name}</h4><small style="color:
 eventsContainer.appendChild(div);
 });
 </script>
+
 </body>
 </html>
-
-
-
-
-
