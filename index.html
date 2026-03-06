@@ -1,140 +1,387 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>Benisport Games</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<title>Benisport Games 2026</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <style>
+:root{
+  --bg:#050505;
+  --card:#111111;
+  --green:#bfff00;
+  --green-glow:#d4ff4d;
+  --white:#ffffff;
+  --gray:#9a9a9a;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;scroll-behavior:smooth}
+
+html, body{
+  overflow-x:hidden;
+}
+
 body{
-  background:#0a0a0a;
-  color:white;
-  font-family:Arial;
-  padding:20px;
+  font-family:'Montserrat',sans-serif;
+  background:url('https://images.unsplash.com/photo-1571902943202-507ec2618e8f?q=80&w=2070') center/cover fixed no-repeat;
+  color:var(--white);
 }
-h2{
-  color:#bfff00;
-  margin-top:40px;
+
+body::before{
+  content:"";
+  position:fixed;
+  top:0;left:0;
+  width:100%;height:100%;
+  background:rgba(0,0,0,.85);
+  z-index:-1;
 }
-.card{
-  background:#111;
-  padding:20px;
-  border-radius:12px;
-  width:280px;
-  box-shadow:0 0 10px rgba(0,255,0,0.2);
-}
-.card img{
+
+#particles{
+  position:fixed;
+  top:0;left:0;
   width:100%;
-  border-radius:10px;
-  margin-bottom:10px;
+  height:100%;
+  pointer-events:none;
+  z-index:0 !important;
 }
-.container{
+
+header, section, footer{
+  position:relative;
+  z-index:10;
+}
+
+header{
+  position:fixed;
+  width:100%;
+  top:0;
+  background:rgba(0,0,0,.9);
+  backdrop-filter:blur(8px);
   display:flex;
-  flex-wrap:wrap;
-  gap:20px;
+  justify-content:space-between;
+  align-items:center;
+  padding:15px 50px;
+  border-bottom:1px solid var(--green);
+  z-index:1000;
 }
-.table{
-  width:100%;
-  border-collapse:collapse;
-  margin-top:20px;
+
+header h1{font-family:'Oswald',sans-serif;letter-spacing:3px}
+
+nav{
+  display:flex;
+  align-items:center;
 }
-.table th, .table td{
-  padding:10px;
-  border-bottom:1px solid #333;
+
+nav a{
+  color:white;
+  text-decoration:none;
+  margin-left:30px;
+  transition:.3s;
+  position:relative;
+}
+
+nav a.active, nav a:hover{
+  color:var(--green);
+  text-shadow:0 0 10px var(--green);
+}
+
+.menu-toggle{
+  display:none;
+  flex-direction:column;
+  cursor:pointer;
+}
+
+.menu-toggle span{
+  width:25px;height:3px;
+  background:white;
+  margin:4px 0;
+  transition:.3s;
+}
+
+.hero{
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+}
+
+.hero h2{font-family:'Oswald',sans-serif;font-size:4rem;letter-spacing:4px;text-transform:uppercase}
+.hero p{margin-top:20px;color:var(--gray);letter-spacing:2px}
+
+.countdown{margin-top:30px;font-size:1.5rem;letter-spacing:3px;color:var(--green);text-shadow:0 0 15px var(--green)}
+
+.btn{margin-top:40px;padding:15px 45px;background:var(--green);border-radius:50px;text-decoration:none;color:black;font-weight:700;transition:.3s;box-shadow:0 0 20px var(--green)}
+.btn:hover{box-shadow:0 0 40px var(--green-glow);transform:scale(1.05)}
+
+section{padding:120px 20px;max-width:1300px;margin:auto}
+
+h3{font-family:'Oswald',sans-serif;font-size:2.5rem;margin-bottom:50px;border-left:6px solid var(--green);padding-left:20px}
+
+.card{background:var(--card);padding:40px;border-radius:25px;margin-bottom:40px;box-shadow:0 0 30px rgba(0,0,0,.8);transition:.3s}
+.card:hover{transform:translateY(-8px)}
+
+table{width:100%;border-collapse:collapse}
+th,td{padding:18px;text-align:center}
+th{background:black;font-family:'Oswald',sans-serif;letter-spacing:2px}
+tr:nth-child(even){background:#181818}
+.top1{background:rgba(191,255,0,.15)!important;box-shadow:0 0 20px var(--green);font-weight:700}
+
+.athletes-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:30px}
+.athlete-card{background:#0f0f0f;padding:30px;border-radius:20px;text-align:center;transition:.3s;border:1px solid #222}
+.athlete-card:hover{transform:translateY(-10px);box-shadow:0 0 25px var(--green)}
+.athlete-name{font-family:'Oswald',sans-serif;font-size:1.5rem;margin-bottom:10px}
+.athlete-points{color:var(--green);font-weight:700}
+
+footer{text-align:center;padding:50px;background:black;border-top:2px solid var(--green);color:var(--gray);letter-spacing:2px}
+
+/* MÓVIL */
+@media(max-width:900px){
+  header{padding:15px 20px;}
+  nav{
+    position:absolute;
+    top:70px;
+    right:0;
+    background:black;
+    flex-direction:column;
+    width:100%;
+    display:none;
+    padding:30px;
+    text-align:center;
+    z-index:9999;
+  }
+  nav.show{display:flex;}
+  nav a{margin:15px 0;font-size:1.3rem;}
+  .menu-toggle{display:flex;}
+  .card{padding:25px;}
+  table th, table td{padding:10px;font-size:0.9rem;}
+}
+
+@media(max-width:600px){
+  .athletes-grid{grid-template-columns:1fr;}
 }
 </style>
 </head>
 <body>
 
-<h1 style="color:#bfff00;">Benisport Games</h1>
+<canvas id="particles"></canvas>
 
-<!-- RANKING MASCULINO -->
-<h2>Ranking Masculino</h2>
-<table class="table" id="rankingM"></table>
+<header>
+<h1>BENISPORT GAMES 2026</h1>
+<div class="menu-toggle" id="menuToggle">
+<span></span><span></span><span></span>
+</div>
+<nav id="navMenu">
+<a href="#ranking">Ranking</a>
+<a href="#athletes">Atletas</a>
+<a href="#news">Noticias</a>
+<a href="#events">Eventos</a>
+</nav>
+</header>
 
-<!-- RANKING FEMENINO -->
-<h2>Ranking Femenino</h2>
-<table class="table" id="rankingF"></table>
+<div class="hero">
+<h2>LIGA INTERNACIONAL</h2>
+<p>Elite Internal Championship</p>
+<div class="countdown" id="countdown"></div>
+<a href="#ranking" class="btn">Ver Clasificación Oficial</a>
+</div>
 
-<!-- EVENTOS -->
-<h2>Próximos Eventos</h2>
-<div id="eventosContainer" class="container"></div>
+<section id="ranking">
+<h3>Ranking Oficial</h3>
 
-<!-- NOTICIAS -->
-<h2>Noticias Oficiales</h2>
-<div id="noticiasContainer" class="container"></div>
+<div class="card">
+<h2 style="font-family:'Oswald';margin-bottom:20px;color:var(--green)">Modalidad Masculina</h2>
+<table>
+<thead><tr><th>Pos</th><th>Atleta</th><th>Puntos</th></tr></thead>
+<tbody id="rankingTableM"></tbody>
+</table>
+<canvas id="rankingChartM"></canvas>
+</div>
+
+<div class="card">
+<h2 style="font-family:'Oswald';margin-bottom:20px;color:var(--green)">Modalidad Femenina</h2>
+<table>
+<thead><tr><th>Pos</th><th>Atleta</th><th>Puntos</th></tr></thead>
+<tbody id="rankingTableF"></tbody>
+</table>
+<canvas id="rankingChartF"></canvas>
+</div>
+
+</section>
+
+<section id="athletes">
+<h3>Perfiles de Atletas</h3>
+
+<div class="card">
+<h2 style="font-family:'Oswald';margin-bottom:20px;color:var(--green)">Atletas Masculinos</h2>
+<div class="athletes-grid" id="athletesGridM"></div>
+</div>
+
+<div class="card">
+<h2 style="font-family:'Oswald';margin-bottom:20px;color:var(--green)">Atletas Femeninas</h2>
+<div class="athletes-grid" id="athletesGridF"></div>
+</div>
+
+</section>
+
+<section id="news"><h3>Noticias Oficiales</h3><div class="card" id="newsContainer"></div></section>
+<section id="events"><h3>Próximos Eventos</h3><div class="card" id="eventsContainer"></div></section>
+<footer>BENISPORT GAMES 2026 · Elite Internal League</footer>
 
 <script>
-/* CARGAR RANKINGS */
-function cargarRankings(){
-  let rankingM = JSON.parse(localStorage.getItem("rankingM")) || [];
-  let rankingF = JSON.parse(localStorage.getItem("rankingF")) || [];
+/* MENU */
+const menuToggle=document.getElementById('menuToggle');
+const navMenu=document.getElementById('navMenu');
+menuToggle.addEventListener('click',()=>{navMenu.classList.toggle('show')});
 
-  let tablaM = document.getElementById("rankingM");
-  let tablaF = document.getElementById("rankingF");
+/* PARTICULAS */
+const canvas=document.getElementById('particles');
+const ctxp=canvas.getContext('2d');
+canvas.width=window.innerWidth;canvas.height=window.innerHeight;
 
-  tablaM.innerHTML = "<tr><th>Nombre</th><th>Puntos</th></tr>";
-  tablaF.innerHTML = "<tr><th>Nombre</th><th>Puntos</th></tr>";
+window.addEventListener('resize',()=>{
+  canvas.width=window.innerWidth;
+  canvas.height=window.innerHeight;
+});
 
-  rankingM.sort((a,b)=>b.points - a.points);
-  rankingF.sort((a,b)=>b.points - a.points);
+let particles=[];
+for(let i=0;i<100;i++){particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*2+1,d:Math.random()*0.5})}
+function drawParticles(){ctxp.clearRect(0,0,canvas.width,canvas.height);ctxp.fillStyle='rgba(255,255,255,0.08)';particles.forEach(p=>{ctxp.beginPath();ctxp.arc(p.x,p.y,p.r,0,Math.PI*2);ctxp.fill()});updateParticles()}
+function updateParticles(){particles.forEach(p=>{p.y+=p.d;if(p.y>canvas.height){p.y=0;p.x=Math.random()*canvas.width}})}
+setInterval(drawParticles,33);
 
-  rankingM.forEach(a=>{
-    tablaM.innerHTML += `
-      <tr>
-        <td>${a.name}</td>
-        <td>${a.points}</td>
-      </tr>
-    `;
-  });
+/* COUNTDOWN */
+const eventDate=new Date("April 10, 2026 18:00:00").getTime();
+setInterval(()=>{
+const now=new Date().getTime();
+const distance=eventDate-now;
+const d=Math.floor(distance/(1000*60*60*24));
+const h=Math.floor((distance%(1000*60*60*24))/(1000*60*60));
+const m=Math.floor((distance%(1000*60*60))/(1000*60));
+const s=Math.floor((distance%(1000*60))/1000);
+document.getElementById('countdown').innerHTML=`Próximo evento en: ${d}d ${h}h ${m}m ${s}s`;
+},1000);
 
-  rankingF.forEach(a=>{
-    tablaF.innerHTML += `
-      <tr>
-        <td>${a.name}</td>
-        <td>${a.points}</td>
-      </tr>
-    `;
-  });
+/* ========================= */
+/*   CARGAR DATOS DESDE LOCALSTORAGE */
+/* ========================= */
+
+function loadData(){
+  let rankingM = JSON.parse(localStorage.getItem("rankingM"));
+  let rankingF = JSON.parse(localStorage.getItem("rankingF"));
+
+  if(!rankingM){
+    rankingM = [
+      {name:"Miguel Martínez", points:36},
+      {name:"Marcos Martínez", points:29},
+      {name:"Sergio Galera", points:24},
+      {name:"Carlos López", points:20}
+    ];
+  }
+
+  if(!rankingF){
+    rankingF = [
+      {name:"Carmina Galera", points:18},
+      {name:"Laura Sánchez", points:15},
+      {name:"Ana Torres", points:12}
+    ];
+  }
+
+  return {rankingM, rankingF};
 }
 
-/* CARGAR EVENTOS */
-function cargarEventos(){
-  let eventos = JSON.parse(localStorage.getItem("eventos")) || [];
-  let cont = document.getElementById("eventosContainer");
-  cont.innerHTML = "";
+const data = loadData();
+let rankingM = data.rankingM.sort((a,b)=>b.points-a.points);
+let rankingF = data.rankingF.sort((a,b)=>b.points-a.points);
 
-  eventos.forEach(ev=>{
-    cont.innerHTML += `
-      <div class="card">
-        <h3 style="color:#bfff00;">${ev.titulo}</h3>
-        <p><strong>Fecha:</strong> ${ev.fecha}</p>
-        <p>${ev.descripcion}</p>
-      </div>
-    `;
-  });
-}
+/* ========================= */
+/*   RANKING MASCULINO       */
+/* ========================= */
 
-/* CARGAR NOTICIAS */
-function cargarNoticias(){
-  let noticias = JSON.parse(localStorage.getItem("noticias")) || [];
-  let cont = document.getElementById("noticiasContainer");
-  cont.innerHTML = "";
+const tableM=document.getElementById('rankingTableM');
+rankingM.forEach((athlete,index)=>{
+const row=document.createElement('tr');
+if(index===0)row.classList.add('top1');
+row.innerHTML=`<td>${index+1}</td><td>${athlete.name}</td><td>${athlete.points}</td>`;
+tableM.appendChild(row);
+});
 
-  noticias.forEach(n=>{
-    cont.innerHTML += `
-      <div class="card">
-        ${n.imagen ? `<img src="${n.imagen}">` : ""}
-        <h3 style="color:#bfff00;">${n.titulo}</h3>
-        <p>${n.texto}</p>
-        <p style="font-size:12px; opacity:0.7;">${n.fecha}</p>
-      </div>
-    `;
-  });
-}
+new Chart(document.getElementById('rankingChartM'),{
+type:'bar',
+data:{labels:rankingM.map(a=>a.name),datasets:[{data:rankingM.map(a=>a.points),backgroundColor:'#bfff00'}]},
+options:{plugins:{legend:{display:false}},scales:{x:{ticks:{color:'white'}},y:{ticks:{color:'white'}}}}
+});
 
-/* INICIO */
-cargarRankings();
-cargarEventos();
-cargarNoticias();
+/* ========================= */
+/*   RANKING FEMENINO        */
+/* ========================= */
+
+const tableF=document.getElementById('rankingTableF');
+rankingF.forEach((athlete,index)=>{
+const row=document.createElement('tr');
+if(index===0)row.classList.add('top1');
+row.innerHTML=`<td>${index+1}</td><td>${athlete.name}</td><td>${athlete.points}</td>`;
+tableF.appendChild(row);
+});
+
+new Chart(document.getElementById('rankingChartF'),{
+type:'bar',
+data:{labels:rankingF.map(a=>a.name),datasets:[{data:rankingF.map(a=>a.points),backgroundColor:'#bfff00'}]},
+options:{plugins:{legend:{display:false}},scales:{x:{ticks:{color:'white'}},y:{ticks:{color:'white'}}}}
+});
+
+/* ========================= */
+/*   PERFILES MASCULINOS     */
+/* ========================= */
+
+const gridM=document.getElementById('athletesGridM');
+rankingM.forEach(a=>{
+const card=document.createElement('div');
+card.className='athlete-card';
+card.innerHTML=`
+<div class='athlete-name'>${a.name}</div>
+<div class='athlete-points'>${a.points} puntos</div>
+<p>Competidor oficial Benisport Games 2026.</p>`;
+gridM.appendChild(card);
+});
+
+/* ========================= */
+/*   PERFILES FEMENINOS      */
+/* ========================= */
+
+const gridF=document.getElementById('athletesGridF');
+rankingF.forEach(a=>{
+const card=document.createElement('div');
+card.className='athlete-card';
+card.innerHTML=`
+<div class='athlete-name'>${a.name}</div>
+<div class='athlete-points'>${a.points} puntos</div>
+<p>Competidora oficial Benisport Games 2026.</p>`;
+gridF.appendChild(card);
+});
+
+/* NOTICIAS */
+const newsData=[{title:"Arrancan los Benisport Games 2026",date:"1 Marzo 2026",content:"Comienza oficialmente la liga interna con récord de participación."}];
+const newsContainer=document.getElementById('newsContainer');
+newsData.forEach(n=>{
+const div=document.createElement('div');
+div.style.marginBottom='25px';
+div.innerHTML=`<h4 style="color:var(--green)">${n.title}</h4><small style="color:var(--gray)">${n.date}</small><p>${n.content}</p>`;
+newsContainer.appendChild(div);
+});
+
+/* EVENTOS */
+const eventsData=[{name:"Bar Hold Challenge",date:"10 Abril 2026",description:"Aguantar el máximo tiempo colgado en barra."}];
+const eventsContainer=document.getElementById('eventsContainer');
+eventsData.forEach(e=>{
+const div=document.createElement('div');
+div.style.marginBottom='25px';
+div.innerHTML=`<h4 style="color:var(--green)">${e.name}</h4><small style="color:var(--gray)">${e.date}</small><p>${e.description}</p>`;
+eventsContainer.appendChild(div);
+});
 </script>
 
 </body>
