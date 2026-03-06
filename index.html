@@ -300,6 +300,12 @@ let rankingM=[
 {name:"Marcos Martínez",points:29},
 {name:"Sergio Galera",points:24},
 {name:"Carlos López",points:20},
+{name:"Miguel Martínez",points:86},
+{name:"Miguel Martínez",points:58},
+{name:"Miguel Martínez",points:10},
+{name:"Miguel Martínez",points:8},
+{name:"Miguel Martínez",points:3},
+{name:"Miguel Martínez",points:1},
 ];
 rankingM.sort((a,b)=>b.points-a.points);
 
@@ -321,6 +327,12 @@ options:{plugins:{legend:{display:false}},scales:{x:{ticks:{color:'white'}},y:{t
 /*   RANKING FEMENINO        */
 /* ========================= */
 let rankingF=[
+{name:"Carmina Galera",points:18},
+{name:"Laura Sánchez",points:15},
+{name:"Ana Torres",points:12},
+{name:"Carmina Galera",points:18},
+{name:"Laura Sánchez",points:15},
+{name:"Ana Torres",points:12},
 {name:"Carmina Galera",points:18},
 {name:"Laura Sánchez",points:15},
 {name:"Ana Torres",points:12}
@@ -380,7 +392,7 @@ newsContainer.appendChild(div);
 });
 
 /* EVENTOS */
-const eventsData=[{name:"Bar Hold Challenge",date:"10 Abril 2026",description:"Aguantar mucho."}];
+const eventsData=[{name:"Bar Hold Challenge",date:"10 Abril 2026",description:"Aguantar colgado de la barra el máximo tiempo posible."}];
 const eventsContainer=document.getElementById('eventsContainer');
 eventsData.forEach(e=>{
 const div=document.createElement('div');
@@ -391,6 +403,7 @@ eventsContainer.appendChild(div);
 </script>
 </body>
 </html>
+
 
 
 
